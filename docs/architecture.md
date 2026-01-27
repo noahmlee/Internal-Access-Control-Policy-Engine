@@ -14,6 +14,7 @@ flowchart LR
   Caller[Application / Service] -->|policy + context| Schema[validation/schema.py\n(Pydantic models)]
   Schema --> Semantics[validation/policy_validator.py\n(semantic rules)]
   Semantics --> Evaluator[engine/evaluator.py]
+  Evaluator --> Decision[engine/decision.py]
   Evaluator --> Target[engine/target_matcher.py]
   Evaluator --> Ops[engine/operators.py]
   Evaluator -->|decision| Caller
@@ -62,7 +63,13 @@ Performs evaluation for a single policy:
 - target match
 - resolve dotted fields in the request context
 - evaluate condition group (`all` or `any`)
-- return a decision (`ALLOW`, `DENY`, or `NOT_APPLICABLE`)
+- return a decision (`ALLOW`, `DENY`, or `NOT_APPLICABLE`), optionally as a structured object
+
+### `engine/decision.py`
+
+Defines structured decision outputs:
+- `Decision` (decision, policy_id, reason, trace)
+- `TraceEntry` (target and condition evaluation steps)
 
 ## Data shapes
 

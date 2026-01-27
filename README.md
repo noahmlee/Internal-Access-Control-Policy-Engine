@@ -28,7 +28,7 @@ pytest -q
 ```python
 from validation.schema import Policy
 from validation.policy_validator import validate_policy_semantics
-from engine.evaluator import evaluate_policy
+from engine import evaluate_policy_decision
 
 policy_data = {
     "policy_id": "admin.document.prod.allow.v1",
@@ -50,8 +50,12 @@ context = {
 
 policy = Policy(**policy_data)         # structural validation
 validate_policy_semantics(policy)      # semantic validation
-decision = evaluate_policy(policy, context)
-print(decision)  # "ALLOW"
+result = evaluate_policy_decision(policy, context)
+
+print(result.decision)    # "ALLOW"
+print(result.policy_id)   # "admin.document.prod.allow.v1"
+print(result.reason)      # "conditions satisfied"
+print(result.trace)       # list of trace entries (target + condition evaluations)
 ```
 
 ## Policy format
@@ -119,13 +123,13 @@ Implemented in `engine/operators.py`:
 
 ## Current scope / limitations
 
-- Evaluation is **single-policy** (`evaluate_policy(policy, context)`).
-- The contract calls for explanation/tracing; that is a planned next step.
+- Evaluation is **single-policy** (`evaluate_policy_decision(policy, context)`).
+- Trace is available for single-policy evaluation. Multi-policy trace is a planned step.
 - Missing fields currently evaluate to `DENY` (contract may evolve this to a hard validation failure).
 
 ## Roadmap (next)
 
-- Decision object with trace/explanation (`decision + matched_policy + trace`)
+- Multi-policy evaluation and conflict resolution (and cross-policy trace)
 - Multi-policy evaluation and conflict resolution
 - CLI for validating/evaluating policies from files
 - Packaging (`pyproject.toml`) + CI (GitLab)

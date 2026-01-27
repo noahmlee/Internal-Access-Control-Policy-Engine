@@ -14,10 +14,10 @@ For the contract-level guarantees and terminology, see `docs/policy_contract.md`
 
 ## Outputs
 
-One of:
-- `ALLOW`
-- `DENY`
-- `NOT_APPLICABLE`
+Two common outputs:
+
+- **String decision**: one of `ALLOW`, `DENY`, `NOT_APPLICABLE`
+- **Structured decision** (`engine.decision.Decision`): includes `decision`, `policy_id`, `reason`, and a `trace`
 
 ## Flowchart (single policy)
 
@@ -92,20 +92,20 @@ sequenceDiagram
   Schema-->>Caller: Policy model
   Caller->>Sem: validate_policy_semantics(policy)
   Sem-->>Caller: ok / raise error
-  Caller->>Eval: evaluate_policy(policy, context)
+  Caller->>Eval: evaluate_policy_decision(policy, context)
   Eval->>Target: target_matches(policy.target, context)
   Target-->>Eval: true/false
   alt target does not match
-    Eval-->>Caller: NOT_APPLICABLE
+    Eval-->>Caller: Decision(NOT_APPLICABLE + trace)
   else target matches
     loop each condition
       Eval->>Ops: operator(actual, expected)
       Ops-->>Eval: true/false
     end
     alt conditions pass
-      Eval-->>Caller: policy.effect
+      Eval-->>Caller: Decision(policy.effect + trace)
     else conditions fail
-      Eval-->>Caller: DENY
+      Eval-->>Caller: Decision(DENY + trace)
     end
   end
 ```

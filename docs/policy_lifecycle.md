@@ -69,7 +69,7 @@ At runtime:
 - evaluate deterministically against the request context
 - return a decision
 
-The contract calls for trace/explanation so decisions are auditable.
+This project’s single-policy evaluator can return a structured decision (`engine.decision.Decision`) that includes a trace of target/condition evaluation for auditing.
 
 ## Auditing / observability
 
