@@ -1,0 +1,131 @@
+## Access Control Engine (Decision Engine)
+
+A small, deterministic **policy decision engine** for authorization.
+
+Given:
+- a **policy** (target + conditions + effect)
+- a **request context** (user/resource/environment data)
+
+the engine returns a decision: `ALLOW`, `DENY`, or `NOT_APPLICABLE`.
+
+This project is intentionally focused on **decisioning**, not identity/authentication or enforcement.
+
+See the contract: `docs/policy_contract.md`.
+
+## Quickstart
+
+Create a virtual environment, install dependencies, run tests:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+pytest -q
+```
+
+## Minimal usage (library)
+
+```python
+from validation.schema import Policy
+from validation.policy_validator import validate_policy_semantics
+from engine.evaluator import evaluate_policy
+
+policy_data = {
+    "policy_id": "admin.document.prod.allow.v1",
+    "description": "Admins can access documents in prod",
+    "target": {"resource_type": "document", "environment": "prod"},
+    "conditions": {
+        "all": [
+            {"field": "user.role", "operator": "equals", "value": "admin"},
+        ]
+    },
+    "effect": "ALLOW",
+}
+
+context = {
+    "user": {"id": "1", "role": "admin"},
+    "resource": {"type": "document"},
+    "environment": {"env": "prod"},
+}
+
+policy = Policy(**policy_data)         # structural validation
+validate_policy_semantics(policy)      # semantic validation
+decision = evaluate_policy(policy, context)
+print(decision)  # "ALLOW"
+```
+
+## Policy format
+
+Policies are plain data (JSON/YAML-compatible). The schema is defined in `validation/schema.py`.
+
+Example policy (YAML-style):
+
+```yaml
+policy_id: admin.document.prod.allow.v1
+description: Admins can access documents in prod
+target:
+  resource_type: document
+  environment: prod
+conditions:
+  all:
+    - field: user.role
+      operator: equals
+      value: admin
+effect: ALLOW
+```
+
+## Request context format
+
+The engine expects a dict with at least these top-level keys:
+
+```json
+{
+  "user": {"id": "1", "role": "admin"},
+  "resource": {"type": "document"},
+  "environment": {"env": "prod"}
+}
+```
+
+Field references in conditions are dotted paths like `user.role` or `environment.env`.
+
+## How evaluation works (high-level)
+
+- If the **target does not match**, the engine returns `NOT_APPLICABLE`.
+- Otherwise it evaluates the condition group:
+  - `all`: every condition must be true
+  - `any`: at least one condition must be true
+- If conditions fail, decision is `DENY`.
+- If conditions pass, decision is the policy `effect`.
+
+More detail and diagrams are in:
+- `docs/decision_flow.md`
+- `docs/architecture.md`
+- `docs/policy_lifecycle.md`
+
+## Supported operators
+
+Implemented in `engine/operators.py`:
+- `equals`
+- `in`
+- `gt`
+- `lt`
+
+## Project structure
+
+- `engine/`: policy evaluation (target matching + operators + evaluator)
+- `validation/`: schema + semantic validation rules
+- `docs/`: contract, architecture, evaluation flow, lifecycle
+- `tests/`: unit tests and fixtures
+
+## Current scope / limitations
+
+- Evaluation is **single-policy** (`evaluate_policy(policy, context)`).
+- The contract calls for explanation/tracing; that is a planned next step.
+- Missing fields currently evaluate to `DENY` (contract may evolve this to a hard validation failure).
+
+## Roadmap (next)
+
+- Decision object with trace/explanation (`decision + matched_policy + trace`)
+- Multi-policy evaluation and conflict resolution
+- CLI for validating/evaluating policies from files
+- Packaging (`pyproject.toml`) + CI (GitLab)
