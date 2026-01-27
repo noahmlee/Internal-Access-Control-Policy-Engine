@@ -12,7 +12,7 @@ class Effect(str, Enum):
 class Target(BaseModel):
     # Defines what a policy applies to.
     # Policies whose targets do not match a request are not evaluated.
-    resouce_type: str = Field(..., description="Type of the target resource")
+    resource_type: str = Field(..., description="Type of the target resource")
     environment: str = Field(..., description="Environment (e.g. prod, staging)")
     
 class Condition(BaseModel):
@@ -60,5 +60,5 @@ class Policy(BaseModel):
         description="Human-readable description of the policy intent"
     )
     target: Target
-    Conditions: Conditions
+    conditions: Conditions
     effect: Effect
