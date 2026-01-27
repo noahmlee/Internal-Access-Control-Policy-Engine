@@ -1,33 +1,8 @@
-import copy
 from engine.evaluator import evaluate_policy
 from validation.schema import Policy
+from tests.fixtures.policy import valid_policy
+from tests.fixtures.context import base_context
 
-def valid_policy():
-    return {
-        "policy_id": "test.policy.v1",
-        "target": {
-            "resource_type": "document",
-            "environment": "prod"
-        },
-        "conditions": {
-            "all": [
-                {
-                    "field": "user.role",
-                    "operator": "equals",
-                    "value": "admin"
-                }
-            ]
-        },
-        "effect": "ALLOW"
-    }
-    
-def base_context():
-    return {
-        "user": {"id": "1", "role": "admin"},
-        "resource": {"type": "document"},
-        "environment": {"env": "prod"}
-    }
-    
 def test_policy_allows_when_condition_matches():
     policy = Policy(**valid_policy())
     context = base_context()

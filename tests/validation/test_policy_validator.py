@@ -1,30 +1,11 @@
-import copy
 import pytest
 from validation.schema import Policy
+from tests.fixtures.policy import valid_policy
 from validation.policy_validator import (
     validate_policy_semantics,
     PolicyValidationError,
 )
 
-def valid_policy():
-    return copy.deepcopy({
-        "policy_id": "test.policy.v1",
-        "target": {
-            "resource_type": "document",
-            "environment": "prod"
-        },
-        "conditions": {
-            "all": [
-                {
-                    "field": "user.role",
-                    "operator": "equals",
-                    "value": "admin"
-                }
-            ]
-        },
-        "effect": "ALLOW"
-    })
-    
 def test_unknown_operator_fails():
     data = valid_policy()
     data["conditions"]["all"][0]["operator"] = "contains"
