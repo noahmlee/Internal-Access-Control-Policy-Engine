@@ -1,5 +1,5 @@
 # Runtime dependencies
-pydantic==1.10.13
+pydantic==2.12.5
 
 # Development / testing
 pytest==8.0.0

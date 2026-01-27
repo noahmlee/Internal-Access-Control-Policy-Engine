@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import Any, List, Optional
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, model_validator
 
 # Schema definitions derived from docs/policy_contract.md
 
@@ -36,18 +36,15 @@ class Conditions(BaseModel):
     all: Optional[List[Condition]] = None
     any: Optional[List[Condition]] = None
     
-    @root_validator
-    def validate_condition_group(cls, values):
-        all_conditions = values.get("all")
-        any_conditions = values.get("any")
-        
-        if all_conditions and any_conditions:
+    @model_validator(mode="after")
+    def validate_condition_group(self):
+        if self.all and self.any:
             raise ValueError("Only one of 'all' or 'any' may be defined")
         
-        if not all_conditions and not any_conditions:
+        if not self.all and not self.any:
             raise ValueError("One of 'all' or 'any' must be defined")
         
-        return values
+        return self
     
 class Policy(BaseModel):
     # A declarative access control policy.

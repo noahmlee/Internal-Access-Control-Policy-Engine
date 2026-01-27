@@ -25,7 +25,7 @@ OPERATOR_DEFINITIONS = {
 
 ALLOWED_FIELD_PREFIXES = {
     "user.",
-    "resouce.",
+    "resource.",
     "request.",
 }
 
