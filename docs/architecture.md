@@ -15,6 +15,8 @@ flowchart LR
   Schema --> Semantics[validation/policy_validator.py\n(semantic rules)]
   Semantics --> Evaluator[engine/evaluator.py]
   Evaluator --> Decision[engine/decision.py]
+  Caller --> PolicySet[engine/policy_set.py]
+  PolicySet --> Evaluator
   Evaluator --> Target[engine/target_matcher.py]
   Evaluator --> Ops[engine/operators.py]
   Evaluator -->|decision| Caller
@@ -70,6 +72,13 @@ Performs evaluation for a single policy:
 Defines structured decision outputs:
 - `Decision` (decision, policy_id, reason, trace)
 - `TraceEntry` (target and condition evaluation steps)
+
+### `engine/policy_set.py`
+
+Evaluates a set of policies against a single request context and applies a conflict strategy.
+
+Currently implemented:
+- `deny_overrides`: if any applicable policy yields `DENY`, overall decision is `DENY`; otherwise `ALLOW` if any allows; otherwise `NOT_APPLICABLE`
 
 ## Data shapes
 

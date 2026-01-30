@@ -9,7 +9,7 @@ DecisionOutcome = Literal["ALLOW", "DENY", "NOT_APPLICABLE"]
 
 
 class TraceEntry(BaseModel):
-    kind: Literal["target", "condition"]
+    kind: Literal["target", "condition", "policy"]
     ok: bool
 
     field: Optional[str] = None
@@ -18,6 +18,7 @@ class TraceEntry(BaseModel):
     actual: Optional[Any] = None
 
     detail: Optional[str] = None
+    policy_id: Optional[str] = None
 
 
 class Decision(BaseModel):

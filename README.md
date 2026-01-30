@@ -58,6 +58,16 @@ print(result.reason)      # "conditions satisfied"
 print(result.trace)       # list of trace entries (target + condition evaluations)
 ```
 
+## Evaluating multiple policies
+
+```python
+from engine import evaluate_policies_decision
+
+policies = [Policy(**policy_data)]
+result = evaluate_policies_decision(policies, context)
+print(result.decision)
+```
+
 ## Policy format
 
 Policies are plain data (JSON/YAML-compatible). The schema is defined in `validation/schema.py`.
@@ -123,13 +133,11 @@ Implemented in `engine/operators.py`:
 
 ## Current scope / limitations
 
-- Evaluation is **single-policy** (`evaluate_policy_decision(policy, context)`).
-- Trace is available for single-policy evaluation. Multi-policy trace is a planned step.
-- Missing fields currently evaluate to `DENY` (contract may evolve this to a hard validation failure).
+- Evaluation supports **single-policy** and **multi-policy** (deny-overrides) via `evaluate_policies_decision(...)`.
+- Missing required context fields raise `engine.errors.ContextValidationError`.
 
 ## Roadmap (next)
 
-- Multi-policy evaluation and conflict resolution (and cross-policy trace)
-- Multi-policy evaluation and conflict resolution
+- Additional conflict strategies (priority, first-match, allow-overrides)
 - CLI for validating/evaluating policies from files
 - Packaging (`pyproject.toml`) + CI (GitLab)

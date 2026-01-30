@@ -12,6 +12,8 @@ For the contract-level guarantees and terminology, see `docs/policy_contract.md`
   - `resource`
   - `environment`
 
+Missing fields are treated as invalid input and raise `engine.errors.ContextValidationError`.
+
 ## Outputs
 
 Two common outputs:

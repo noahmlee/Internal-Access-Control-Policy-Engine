@@ -71,6 +71,8 @@ At runtime:
 
 This project’s single-policy evaluator can return a structured decision (`engine.decision.Decision`) that includes a trace of target/condition evaluation for auditing.
 
+Invalid request contexts (missing required fields) are rejected by raising `engine.errors.ContextValidationError`.
+
 ## Auditing / observability
 
 Capture enough metadata to answer:

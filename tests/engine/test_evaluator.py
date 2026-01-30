@@ -1,4 +1,7 @@
+import pytest
+
 from engine.evaluator import evaluate_policy
+from engine.errors import ContextValidationError
 from validation.schema import Policy
 from tests.fixtures.policy import valid_policy
 from tests.fixtures.context import base_context
@@ -22,15 +25,14 @@ def test_policy_denies_when_condition_fails():
     
     assert decision == "DENY"
     
-def test_missing_field_results_in_deny():
+def test_missing_field_raises_context_validation_error():
     policy = Policy(**valid_policy())
     
     context = base_context()
     del context["user"]["role"]
     
-    decision = evaluate_policy(policy, context)
-    
-    assert decision == "DENY"
+    with pytest.raises(ContextValidationError, match="missing field"):
+        evaluate_policy(policy, context)
     
 def test_in_operator_allows_when_value_in_list():
     data = valid_policy()

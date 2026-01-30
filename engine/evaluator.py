@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from engine.decision import Decision, TraceEntry
+from engine.errors import ContextValidationError
 from engine.operators import OPERATORS
 from engine.target_matcher import target_matches
 
@@ -14,10 +15,10 @@ def resolve_field(path: str, context: dict[str, Any]) -> Any:
     value: Any = context
     for part in parts:
         if not isinstance(value, dict):
-            return None
+            raise ContextValidationError(f"missing field '{path}'")
         value = value.get(part)
         if value is None:
-            return None
+            raise ContextValidationError(f"missing field '{path}'")
     return value
 
 def evaluate_conditions(conditions, context: dict[str, Any]) -> bool:
@@ -107,7 +108,7 @@ def evaluate_policy_decision(policy, context: dict[str, Any]) -> Decision:
         )
 
     return Decision(
-        decision=str(policy.effect),
+        decision=getattr(policy.effect, "value", policy.effect),
         policy_id=policy_id,
         trace=trace,
         reason="conditions satisfied",
