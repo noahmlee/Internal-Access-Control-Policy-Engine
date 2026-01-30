@@ -1,4 +1,5 @@
 import pytest
+
 from engine.errors import ContextValidationError
 from engine.evaluator import evaluate_policy
 from tests.fixtures.context import base_context
@@ -55,11 +56,13 @@ def test_in_operator_allows_when_value_in_list():
 
 def test_all_conditions_must_pass():
     data = valid_policy()
-    data["conditions"]["all"].append({
-        "field": "environment.env",
-        "operator": "equals",
-        "value": "prod",
-    })
+    data["conditions"]["all"].append(
+        {
+            "field": "environment.env",
+            "operator": "equals",
+            "value": "prod",
+        }
+    )
 
     policy = Policy(**data)
     context = base_context()

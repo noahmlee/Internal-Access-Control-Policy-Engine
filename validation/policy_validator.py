@@ -48,19 +48,12 @@ def _validate_condition(condition: Condition) -> None:
 
 def _validate_operator(condition: Condition) -> None:
     if condition.operator not in OPERATOR_DEFINITIONS:
-        raise PolicyValidationError(
-            f"Unsupported operator '{condition.operator}'"
-        )
+        raise PolicyValidationError(f"Unsupported operator '{condition.operator}'")
 
 
 def _validate_field_path(condition: Condition) -> None:
-    if not any(
-        condition.field.startswith(prefix)
-        for prefix in ALLOWED_FIELD_PREFIXES
-    ):
-        raise PolicyValidationError(
-            f"Illegal field path '{condition.field}'"
-        )
+    if not any(condition.field.startswith(prefix) for prefix in ALLOWED_FIELD_PREFIXES):
+        raise PolicyValidationError(f"Illegal field path '{condition.field}'")
 
 
 def _validate_operator_value(condition: Condition) -> None:

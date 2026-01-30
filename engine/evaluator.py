@@ -10,6 +10,7 @@ from engine.target_matcher import target_matches
 DECISION_DENY = "DENY"
 DECISION_NOT_APPLICABLE = "NOT_APPLICABLE"
 
+
 def resolve_field(path: str, context: dict[str, Any]) -> Any:
     parts = path.split(".")
     value: Any = context
@@ -20,6 +21,7 @@ def resolve_field(path: str, context: dict[str, Any]) -> Any:
         if value is None:
             raise ContextValidationError(f"missing field '{path}'")
     return value
+
 
 def evaluate_conditions(conditions, context: dict[str, Any]) -> bool:
     condition_list = conditions.all if conditions.all is not None else conditions.any
@@ -37,6 +39,7 @@ def evaluate_conditions(conditions, context: dict[str, Any]) -> bool:
         results.append(operator_fn(actual, condition.value))
 
     return all(results) if mode_all else any(results)
+
 
 def evaluate_policy(policy, context: dict[str, Any]) -> str:
     if not target_matches(policy.target, context):

@@ -4,4 +4,3 @@ class PolicyEvaluationError(Exception):
 
 class ContextValidationError(PolicyEvaluationError):
     pass
-

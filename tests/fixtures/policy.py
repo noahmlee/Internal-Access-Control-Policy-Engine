@@ -3,16 +3,16 @@ def valid_policy():
         "policy_id": "test.policy.v1",
         "target": {
             "resource_type": "document",
-            "environment": "prod"
+            "environment": "prod",
         },
         "conditions": {
             "all": [
                 {
                     "field": "user.role",
                     "operator": "equals",
-                    "value": "admin"
+                    "value": "admin",
                 }
             ]
         },
-        "effect": "ALLOW"
+        "effect": "ALLOW",
     }
