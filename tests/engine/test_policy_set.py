@@ -2,10 +2,9 @@ import pytest
 
 from engine import evaluate_policies_decision
 from engine.errors import ContextValidationError
-from validation.schema import Policy
-
 from tests.fixtures.context import base_context
 from tests.fixtures.policy import valid_policy
+from validation.schema import Policy
 
 
 def test_policy_set_not_applicable_when_no_policy_matches_target():
@@ -47,4 +46,3 @@ def test_policy_set_raises_when_context_missing_required_target_fields():
 
     with pytest.raises(ContextValidationError):
         evaluate_policies_decision([policy], context)
-

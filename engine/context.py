@@ -1,5 +1,7 @@
-from pydantic import BaseModel
 from typing import Any, Dict
+
+from pydantic import BaseModel
+
 
 class RequestContext(BaseModel):
     user: Dict[str, Any]

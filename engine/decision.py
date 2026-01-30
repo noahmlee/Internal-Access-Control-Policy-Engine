@@ -4,7 +4,6 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
 
-
 DecisionOutcome = Literal["ALLOW", "DENY", "NOT_APPLICABLE"]
 
 

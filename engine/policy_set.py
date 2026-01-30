@@ -65,4 +65,3 @@ def evaluate_policies_decision(
         trace=traces,
         reason="no applicable policies",
     )
-
