@@ -1,0 +1,5 @@
+{
+  "user": {"id": "1", "role": "admin"},
+  "resource": {"type": "document"},
+  "environment": {"env": "prod"}
+}

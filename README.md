@@ -85,6 +85,30 @@ result = evaluate_policies_decision(policies, context)
 print(result.decision)
 ```
 
+## CLI
+
+After `pip install -e .` (or `pip install -e ".[dev]"`), the `ace` command is available:
+
+```bash
+# Validate a policy file (.json, .yaml, or .yml)
+ace validate policy.yaml
+
+# Evaluate one policy against a context (context is JSON)
+ace evaluate policy.yaml context.json
+ace evaluate policy.yaml context.json --trace
+
+# Evaluate multiple policies (deny-overrides) against a context
+ace evaluate-policies policy1.yaml policy2.yaml context.json
+ace evaluate-policies policy1.yaml policy2.yaml context.json --trace
+```
+
+Example with bundled samples (from project root):
+
+```bash
+ace validate examples/policy.yaml
+ace evaluate examples/policy.yaml examples/context.json --trace
+```
+
 ## Policy format
 
 Policies are plain data (JSON/YAML-compatible). The schema is defined in `validation/schema.py`.
@@ -145,6 +169,7 @@ Implemented in `engine/operators.py`:
 
 - `engine/`: policy evaluation (target matching + operators + evaluator)
 - `validation/`: schema + semantic validation rules
+- `cli/`: command-line interface (`ace validate`, `ace evaluate`, `ace evaluate-policies`)
 - `docs/`: contract, architecture, evaluation flow, lifecycle
 - `tests/`: unit tests and fixtures
 
@@ -156,5 +181,4 @@ Implemented in `engine/operators.py`:
 ## Roadmap (next)
 
 - Additional conflict strategies (priority, first-match, allow-overrides)
-- CLI for validating/evaluating policies from files
-- Packaging (`pyproject.toml`) + CI (GitHub Actions)
+- Packaging (`pyproject.toml`) + CI (GitHub Actions) — in place

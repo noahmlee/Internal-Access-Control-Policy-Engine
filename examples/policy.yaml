@@ -1,0 +1,11 @@
+policy_id: admin.document.prod.allow.v1
+description: Admins can access documents in prod
+target:
+  resource_type: document
+  environment: prod
+conditions:
+  all:
+    - field: user.role
+      operator: equals
+      value: admin
+effect: ALLOW
