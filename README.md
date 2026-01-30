@@ -23,6 +23,23 @@ pip install -r requirements.txt
 pytest -q
 ```
 
+Or install with dev tools (ruff, black, mypy, pytest-cov):
+
+```bash
+pip install -e ".[dev]"
+pytest -q
+```
+
+## Development / CI
+
+- **Lint**: `ruff check engine validation context cli tests`
+- **Format**: `black engine validation context cli tests`
+- **Type check**: `mypy engine validation cli`
+- **Tests with coverage**: `pytest --cov=engine --cov=validation --cov-report=term`
+- **Pre-commit**: `pre-commit install` then `pre-commit run --all-files`
+
+GitHub Actions (`.github/workflows/ci.yml`) runs lint, format check, mypy, and pytest with coverage on each push.
+
 ## Minimal usage (library)
 
 ```python
@@ -140,4 +157,4 @@ Implemented in `engine/operators.py`:
 
 - Additional conflict strategies (priority, first-match, allow-overrides)
 - CLI for validating/evaluating policies from files
-- Packaging (`pyproject.toml`) + CI (GitLab)
+- Packaging (`pyproject.toml`) + CI (GitHub Actions)
