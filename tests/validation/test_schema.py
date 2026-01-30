@@ -1,5 +1,4 @@
 import pytest
-
 from pydantic import ValidationError
 from tests.fixtures.policy import valid_policy
 from validation.schema import Policy

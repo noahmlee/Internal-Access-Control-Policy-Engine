@@ -41,10 +41,10 @@ def evaluate_conditions(conditions, context: dict[str, Any]) -> bool:
 def evaluate_policy(policy, context: dict[str, Any]) -> str:
     if not target_matches(policy.target, context):
         return DECISION_NOT_APPLICABLE
-    
+
     if not evaluate_conditions(policy.conditions, context):
         return DECISION_DENY
-    
+
     return policy.effect
 
 

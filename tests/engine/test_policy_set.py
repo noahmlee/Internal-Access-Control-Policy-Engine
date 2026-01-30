@@ -1,10 +1,10 @@
 import pytest
-
-from engine import evaluate_policies_decision
 from engine.errors import ContextValidationError
 from tests.fixtures.context import base_context
 from tests.fixtures.policy import valid_policy
 from validation.schema import Policy
+
+from engine import evaluate_policies_decision
 
 
 def test_policy_set_not_applicable_when_no_policy_matches_target():

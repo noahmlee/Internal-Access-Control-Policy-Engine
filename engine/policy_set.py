@@ -1,8 +1,9 @@
 from __future__ import annotations
-from typing import Any, Iterable, Literal, Optional
+
+from typing import Any, Iterable, Literal
+
 from engine.decision import Decision, TraceEntry
 from engine.evaluator import evaluate_policy_decision
-
 
 ConflictStrategy = Literal["deny_overrides"]
 

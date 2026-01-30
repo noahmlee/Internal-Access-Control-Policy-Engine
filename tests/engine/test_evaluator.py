@@ -1,7 +1,6 @@
 import pytest
-
-from engine.evaluator import evaluate_policy
 from engine.errors import ContextValidationError
+from engine.evaluator import evaluate_policy
 from tests.fixtures.context import base_context
 from tests.fixtures.policy import valid_policy
 from validation.schema import Policy

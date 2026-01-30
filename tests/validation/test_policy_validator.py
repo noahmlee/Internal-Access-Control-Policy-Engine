@@ -1,5 +1,4 @@
 import pytest
-
 from tests.fixtures.policy import valid_policy
 from validation.policy_validator import (
     PolicyValidationError,
