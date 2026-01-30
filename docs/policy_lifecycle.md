@@ -8,13 +8,13 @@ The design intent is “safe by construction” and “explainable decisions” 
 
 ```mermaid
 flowchart LR
-  A[Author policy] --> B[Structural validation\n(schema)]
-  B --> C[Semantic validation\n(rules)]
-  C --> D[Review / approval]
-  D --> E[Publish to policy store]
+  A[Author policy] --> B[Structural validation]
+  B --> C[Semantic validation]
+  C --> D[Review approval]
+  D --> E[Publish to store]
   E --> F[Evaluate requests]
-  F --> G[Audit / observe]
-  G --> H[Iterate new version]
+  F --> G[Audit observe]
+  G --> H[Iterate version]
   H --> A
 ```
 

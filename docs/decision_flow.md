@@ -25,7 +25,7 @@ Two common outputs:
 
 ```mermaid
 flowchart TD
-  A[Start] --> B[Parse Policy (schema)]
+  A[Start] --> B[Parse Policy schema]
   B --> C[Validate semantics]
   C --> D{Target matches?}
   D -- no --> NA[Return NOT_APPLICABLE]

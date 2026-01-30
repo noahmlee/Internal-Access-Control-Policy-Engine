@@ -11,14 +11,14 @@ The guiding constraints live in `docs/policy_contract.md`.
 
 ```mermaid
 flowchart LR
-  Caller[Application / Service] -->|policy + context| Schema[validation/schema.py\n(Pydantic models)]
-  Schema --> Semantics[validation/policy_validator.py\n(semantic rules)]
-  Semantics --> Evaluator[engine/evaluator.py]
-  Evaluator --> Decision[engine/decision.py]
-  Caller --> PolicySet[engine/policy_set.py]
+  Caller[Application] -->|policy + context| Schema[Policy schema]
+  Schema --> Semantics[Semantic validator]
+  Semantics --> Evaluator[Evaluator]
+  Evaluator --> Decision[Decision]
+  Caller --> PolicySet[Policy set]
   PolicySet --> Evaluator
-  Evaluator --> Target[engine/target_matcher.py]
-  Evaluator --> Ops[engine/operators.py]
+  Evaluator --> Target[Target matcher]
+  Evaluator --> Ops[Operators]
   Evaluator -->|decision| Caller
 ```
 
